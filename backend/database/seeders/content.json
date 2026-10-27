@@ -1,0 +1,395 @@
+{
+  "services": [
+    {
+      "slug": "custom-software",
+      "icon": "⌘",
+      "name": "Custom software development",
+      "summary": "Purpose-built systems that bring your people, processes and information together.",
+      "hero_title": "Software that works your way.",
+      "heading": "Built around\nyour real needs.",
+      "body": "When spreadsheets, disconnected tools or off-the-shelf software start getting in the way, a tailored system can give your team a clearer way to work.",
+      "features": [
+        "Business portals & internal tools",
+        "CRM & ERP systems",
+        "Role-based dashboards",
+        "Reporting & workflow management"
+      ],
+      "deliverables": [
+        "Discovery and process mapping",
+        "Data model and architecture",
+        "Responsive interface and integrations",
+        "Testing, documentation and handover"
+      ],
+      "related_slugs": [
+        "web-development",
+        "mobile-apps"
+      ],
+      "sort_order": 1
+    },
+    {
+      "slug": "web-development",
+      "icon": "↗",
+      "name": "Website & web app development",
+      "summary": "Fast, accessible websites and capable web applications with room to grow.",
+      "hero_title": "A better experience. Every click.",
+      "heading": "Built around\nyour real needs.",
+      "body": "Your website should explain your business clearly. Your web application should make it easier to do business. We connect considered design with reliable engineering.",
+      "features": [
+        "Corporate & marketing websites",
+        "Customer & partner portals",
+        "Progressive web applications",
+        "Content management systems"
+      ],
+      "deliverables": [
+        "Content and user journey planning",
+        "Responsive interface design",
+        "Frontend and backend development",
+        "Performance and accessibility checks"
+      ],
+      "related_slugs": [
+        "mobile-apps",
+        "saas-products"
+      ],
+      "sort_order": 2
+    },
+    {
+      "slug": "mobile-apps",
+      "icon": "◫",
+      "name": "Mobile app development",
+      "summary": "Useful mobile experiences for customers, teams and connected services.",
+      "hero_title": "Made for life on the move.",
+      "heading": "Built around\nyour real needs.",
+      "body": "A successful app earns its place on someone’s phone. We focus on the essential tasks, intuitive interactions and the operational needs behind the experience.",
+      "features": [
+        "iOS & Android applications",
+        "Cross-platform development",
+        "API & device integrations",
+        "Notifications & offline workflows"
+      ],
+      "deliverables": [
+        "Platform and feature planning",
+        "Interactive mobile prototypes",
+        "Application and API development",
+        "Device testing and release preparation"
+      ],
+      "related_slugs": [
+        "saas-products",
+        "product-design"
+      ],
+      "sort_order": 3
+    },
+    {
+      "slug": "saas-products",
+      "icon": "⊞",
+      "name": "SaaS product development",
+      "summary": "Subscription platforms built around a clear product, dependable systems and a great customer experience.",
+      "hero_title": "Your idea. Ready to scale.",
+      "heading": "Built around\nyour real needs.",
+      "body": "Move from a promising idea to a product people can use. Start with a focused first release and an architecture that supports the next stage of growth.",
+      "features": [
+        "MVP & product development",
+        "Multi-tenant platforms",
+        "Subscription & billing integration",
+        "User onboarding & admin tools"
+      ],
+      "deliverables": [
+        "Product roadmap and MVP scope",
+        "Account and permissions design",
+        "Platform and billing implementation",
+        "Launch planning and iteration"
+      ],
+      "related_slugs": [
+        "product-design",
+        "ai-automation"
+      ],
+      "sort_order": 4
+    },
+    {
+      "slug": "product-design",
+      "icon": "◇",
+      "name": "UI/UX & product design",
+      "summary": "Digital experiences that bring clarity to complex journeys.",
+      "hero_title": "Easy to use. Hard to forget.",
+      "heading": "Built around\nyour real needs.",
+      "body": "Design connects what your business needs with what people need to do. We make that connection visible, testable and consistent across the product.",
+      "features": [
+        "UX research & journey mapping",
+        "Wireframes & interactive prototypes",
+        "Interface & interaction design",
+        "Reusable design systems"
+      ],
+      "deliverables": [
+        "Research and experience audit",
+        "User flows and wireframes",
+        "High-fidelity screens and prototypes",
+        "Design system and developer handover"
+      ],
+      "related_slugs": [
+        "ai-automation",
+        "ecommerce"
+      ],
+      "sort_order": 5
+    },
+    {
+      "slug": "ai-automation",
+      "icon": "✳",
+      "name": "AI & business automation",
+      "summary": "Practical AI and connected workflows that help teams spend time on the work that matters.",
+      "hero_title": "Less busywork. More possibility.",
+      "heading": "Built around\nyour real needs.",
+      "body": "The right automation starts with a real bottleneck. We identify repeatable tasks, evaluate where AI helps and design sensible review points for people.",
+      "features": [
+        "AI assistants & knowledge tools",
+        "Document processing",
+        "Workflow & approval automation",
+        "Tool-to-tool integrations"
+      ],
+      "deliverables": [
+        "Workflow and data review",
+        "Feasibility and prototype",
+        "Integration and human review controls",
+        "Evaluation, monitoring and refinement"
+      ],
+      "related_slugs": [
+        "ecommerce",
+        "cloud-support"
+      ],
+      "sort_order": 6
+    },
+    {
+      "slug": "ecommerce",
+      "icon": "▤",
+      "name": "E-commerce development",
+      "summary": "Connected shopping experiences from product discovery to order fulfilment.",
+      "hero_title": "Turn browsing into buying.",
+      "heading": "Built around\nyour real needs.",
+      "body": "A good store makes buying feel straightforward. We connect the customer experience with the systems your team needs to manage products, payments and orders.",
+      "features": [
+        "Online stores & custom storefronts",
+        "Product catalogues & search",
+        "Payment & checkout integrations",
+        "Inventory & order management"
+      ],
+      "deliverables": [
+        "Store and catalogue planning",
+        "Responsive shopping experience",
+        "Payments and operations integrations",
+        "Checkout testing and launch preparation"
+      ],
+      "related_slugs": [
+        "cloud-support",
+        "custom-software"
+      ],
+      "sort_order": 7
+    },
+    {
+      "slug": "cloud-support",
+      "icon": "⋈",
+      "name": "Integrations, cloud & support",
+      "summary": "Connected systems, considered deployment and ongoing care for your digital products.",
+      "hero_title": "Keep everything moving.",
+      "heading": "Built around\nyour real needs.",
+      "body": "Launching a product is a beginning. Keep your systems connected, understand how they are performing and make improvements through an agreed support plan.",
+      "features": [
+        "Third-party APIs & integrations",
+        "Cloud deployment & configuration",
+        "Maintenance & improvements",
+        "Monitoring & release workflows"
+      ],
+      "deliverables": [
+        "Infrastructure and integration review",
+        "Deployment and release setup",
+        "Monitoring and maintenance planning",
+        "Documentation and agreed support scope"
+      ],
+      "related_slugs": [
+        "custom-software",
+        "web-development"
+      ],
+      "sort_order": 8
+    }
+  ],
+  "insights": [
+    {
+      "slug": "planning-your-mvp",
+      "category": "PRODUCT THINKING",
+      "read_minutes": 5,
+      "title": "Start smaller. Learn sooner.",
+      "intro": "How to define a first release around the one thing your users need most.",
+      "teaser_art": "01 → 02",
+      "sections": [
+        {
+          "heading": "Start with a problem, not a feature list.",
+          "body": "Describe the person you are building for, the task they need to complete and what makes it difficult today. A clear problem statement makes it easier to judge every proposed feature."
+        },
+        {
+          "heading": "Choose one complete user journey.",
+          "body": "A first release should let someone finish a useful task from beginning to end. Account creation alone is not a product. Account creation followed by the essential action and a clear result can be."
+        },
+        {
+          "heading": "Separate essential from useful later.",
+          "body": "Make three lists: essential to the first journey, helpful but optional, and later experiments. Keep integrations, reporting and administration in view; they are easy to underestimate when planning only the customer interface."
+        },
+        {
+          "heading": "Define how you will learn.",
+          "body": "Agree on the questions the first release should answer. Can people complete the task? Where do they stop? What support do they need? Combine usage observations with direct feedback rather than relying on a single number."
+        },
+        {
+          "heading": "Plan the next decision.",
+          "body": "An MVP is not a promise to build every feature later. It is a way to decide what deserves the next investment. Set a review point, collect evidence and adjust your priorities."
+        }
+      ],
+      "published_at": "2026-10-13 09:00:00"
+    },
+    {
+      "slug": "design-before-development",
+      "category": "DESIGN & EXPERIENCE",
+      "read_minutes": 4,
+      "title": "Clarity before code.",
+      "intro": "Why a shared prototype can make your next build easier to understand.",
+      "teaser_art": "{ clarity }",
+      "sections": [
+        {
+          "heading": "Make assumptions visible.",
+          "body": "Different people can agree on a feature name while imagining very different experiences. A prototype turns that ambiguity into screens, actions and outcomes everyone can discuss."
+        },
+        {
+          "heading": "Follow the everyday task.",
+          "body": "Start with the journeys people use most often. Show what happens before and after the ideal path: missing information, an interrupted action, an empty account and a recoverable error."
+        },
+        {
+          "heading": "Use the right level of detail.",
+          "body": "Early wireframes help decide structure. More detailed prototypes help test wording, hierarchy and interactions. Match the fidelity to the decision you need to make, rather than polishing every screen immediately."
+        },
+        {
+          "heading": "Bring engineering into the conversation.",
+          "body": "Design and development should inform each other. Discuss data, permissions, integrations and performance early enough that they can shape the experience."
+        },
+        {
+          "heading": "Keep the decisions with the design.",
+          "body": "Record what was agreed, what is still uncertain and why a direction was chosen. That context makes handover more useful than a collection of screens alone."
+        }
+      ],
+      "published_at": "2026-10-12 09:00:00"
+    },
+    {
+      "slug": "practical-automation",
+      "category": "AI & AUTOMATION",
+      "read_minutes": 4,
+      "title": "Automate the right things.",
+      "intro": "A practical starting point for reducing repetitive work in your business.",
+      "teaser_art": "input → output",
+      "sections": [
+        {
+          "heading": "Look for repetition and friction.",
+          "body": "List the tasks that repeatedly move the same information between people or tools. Note the time involved, the error rate you observe and the decisions a person still needs to make."
+        },
+        {
+          "heading": "Improve the process first.",
+          "body": "Automating an unclear process can make confusion move faster. Agree on the trigger, the required information, the expected outcome and the person responsible for exceptions."
+        },
+        {
+          "heading": "Choose simple rules when they are enough.",
+          "body": "Not every automation needs AI. Predictable routing, reminders and data synchronisation often work well with explicit rules. AI may help with less structured information, but its output needs evaluation."
+        },
+        {
+          "heading": "Keep a human review path.",
+          "body": "Identify decisions that need approval, define what happens when confidence is low and make it possible to correct an output. Keep access to sensitive information limited to what the task requires."
+        },
+        {
+          "heading": "Measure a small pilot.",
+          "body": "Start with a contained workflow and compare the results with how the task works today. Review time saved, errors, exceptions and maintenance needs before expanding."
+        }
+      ],
+      "published_at": "2026-10-11 09:00:00"
+    }
+  ],
+  "work_concepts": [
+    {
+      "slug": "operations",
+      "name": "Operations workspace",
+      "tags": "Custom software / Workflow design",
+      "title": "A clearer day for every team.",
+      "summary": "A concept for bringing requests, tasks and approvals into one shared workspace.",
+      "opportunity": "Replace scattered updates with a shared view of tasks, ownership and decisions.",
+      "includes": [
+        "Role-based access and team workspaces",
+        "Requests, approvals and activity history",
+        "Reporting and integration with existing tools"
+      ],
+      "sort_order": 1
+    },
+    {
+      "slug": "learning",
+      "name": "Learning platform",
+      "tags": "SaaS / UX design",
+      "title": "A connected learning experience.",
+      "summary": "A concept for keeping lessons, learning resources and student progress together.",
+      "opportunity": "Help students and teachers find the right lesson, resource and next step in one place.",
+      "includes": [
+        "Lesson scheduling and learning resources",
+        "Student and teacher dashboards",
+        "Progress, attendance and communication"
+      ],
+      "sort_order": 2
+    },
+    {
+      "slug": "commerce",
+      "name": "Commerce experience",
+      "tags": "E-commerce / Web development",
+      "title": "From discovery to checkout.",
+      "summary": "A concept for a focused storefront with clear product information and simple purchasing.",
+      "opportunity": "Make it easier to explore a collection and understand what to buy.",
+      "includes": [
+        "Product catalogue, search and filtering",
+        "Checkout and payment integration",
+        "Order and inventory management"
+      ],
+      "sort_order": 3
+    }
+  ],
+  "industries": [
+    {
+      "slug": "legal-and-professional-services",
+      "name": "Legal & professional services",
+      "summary": "Client intake, document workflows, case coordination and business operations.",
+      "service_slug": "custom-software",
+      "sort_order": 1
+    },
+    {
+      "slug": "education-and-learning",
+      "name": "Education & learning",
+      "summary": "Lesson scheduling, student portals, learning resources and progress tracking.",
+      "service_slug": "saas-products",
+      "sort_order": 2
+    },
+    {
+      "slug": "retail-and-e-commerce",
+      "name": "Retail & e-commerce",
+      "summary": "Connected storefronts, product catalogues, checkout and fulfilment workflows.",
+      "service_slug": "ecommerce",
+      "sort_order": 3
+    },
+    {
+      "slug": "business-services",
+      "name": "Business services",
+      "summary": "Customer management, staff portals, reporting and task automation.",
+      "service_slug": "ai-automation",
+      "sort_order": 4
+    },
+    {
+      "slug": "startups-and-product-teams",
+      "name": "Startups & product teams",
+      "summary": "Prototypes, focused MVPs and subscription platforms ready for the next stage.",
+      "service_slug": "saas-products",
+      "sort_order": 5
+    },
+    {
+      "slug": "property-and-operations",
+      "name": "Property & operations",
+      "summary": "Property portals, service requests, asset information and operational dashboards.",
+      "service_slug": "web-development",
+      "sort_order": 6
+    }
+  ]
+}
