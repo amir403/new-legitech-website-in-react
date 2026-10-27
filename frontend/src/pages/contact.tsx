@@ -1,5 +1,5 @@
 import { useRef, useState, type FormEvent, type ReactNode } from 'react'
-import { Link, useLoaderData } from 'react-router'
+import { Link, useLoaderData, useSearchParams } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -79,6 +79,10 @@ function SelectField({ id, label, options, error, required, defaultValue, placeh
 
 export default function Contact() {
   const options = useLoaderData<typeof loader>()
+  // Pricing "Get started" links pre-fill the service and the start of the brief.
+  const [params] = useSearchParams()
+  const presetService = options.services.find((s) => s === params.get('service'))
+  const interest = params.get('interest')
   const formRef = useRef<HTMLFormElement>(null)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [status, setStatus] = useState('')
@@ -172,7 +176,7 @@ export default function Contact() {
           <Label htmlFor="company">Company</Label>
           <Input id="company" name="company" autoComplete="organization" placeholder="Your company or organisation" maxLength={160} {...invalid('company')} />
           <FieldError id="company" error={errors.company} />
-          <SelectField id="service" label="What can we help with? *" options={options.services} error={errors.service} required placeholder="Select a service" />
+          <SelectField id="service" label="What can we help with? *" options={options.services} error={errors.service} required placeholder="Select a service" defaultValue={presetService} />
           <Label htmlFor="idea">Tell us about your project *</Label>
           <Textarea
             id="idea"
@@ -181,6 +185,7 @@ export default function Contact() {
             required
             minLength={10}
             maxLength={5000}
+            defaultValue={interest ? `I'm interested in the ${interest.slice(0, 200)}.\n\n` : undefined}
             placeholder="What would you like to build, who is it for, and what needs to work better?"
             {...invalid('idea')}
           />

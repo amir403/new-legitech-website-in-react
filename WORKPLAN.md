@@ -57,6 +57,8 @@ GET  /api/admin/enquiries     PATCH|DELETE /api/admin/enquiries/{id}  (status on
 7. **SEO + polish** — per-route `<title>`/meta description, 404 page, keep the old `*.html` URLs working through redirects to the new routes, accessibility pass (skip link, focus, ARIA), 1180/900/680px breakpoints.
 8. **Deploy** — `npm run build` output served by Apache with an SPA fallback `.htaccess`; Laravel `public/` serving `/api` (the React app serves `/admin`); production `.env`, mail driver, `php artisan optimize`.
 
+9. **Pricing + checkout** — pricing page with DB-driven packages, add-ons and bundles (done); admin screens and Stripe/Klarna checkout later. See `PRICING-CHECKOUT-PLAN.md`.
+
 ## Dev commands
 
 ```

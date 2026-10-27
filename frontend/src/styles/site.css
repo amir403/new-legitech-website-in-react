@@ -84,6 +84,61 @@ summary,.faqs [data-slot=accordion-trigger]{font-size:1.1rem;padding-block:20px}
 .hero-art,.hero-art img{min-height:280px}
 }
 
+/* Nav: keep labels on one line now that it has a Pricing link; tighter spacing between tablet and desktop. */
+.nav nav a{white-space:nowrap}
+@media (min-width:901px) and (max-width:1280px){.nav{gap:12px}.nav nav{gap:0}.nav nav a{padding:10px 9px}.nav-cta{padding:10px 14px}}
+
+/* Pricing page (pages/pricing.tsx). Same card, line and lime tokens as the original sections. */
+.package-grid,.addon-grid,.bundle-grid,.comparison-stack{display:grid;gap:16px}
+.package-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+.addon-grid{grid-template-columns:repeat(4,minmax(0,1fr))}
+.bundle-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+.package-card,.addon-card,.bundle-card{display:flex;flex-direction:column;gap:14px;padding:24px;border:1px solid var(--line);border-radius:var(--radius);background:rgba(255,255,255,.045)}
+.package-card h3,.addon-card h3,.bundle-card h3{margin:0}
+.package-card p,.addon-card p,.bundle-card p{margin:0;color:var(--muted)}
+.package-card.is-recommended,.bundle-card{border-color:rgba(212,250,69,.65)}
+.package-top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.badge{padding:4px 10px;border-radius:999px;background:var(--lime);color:#11130f;font-size:.78rem;font-weight:800;white-space:nowrap}
+.price-range{font-family:"Manrope Variable","DM Sans Variable",Arial,sans-serif;font-size:clamp(1.5rem,2.4vw,2rem);font-weight:800;line-height:1.1}
+.price-range small{color:var(--muted);font-size:.85rem}
+.package-facts{display:grid;gap:6px;margin:0;padding:0;list-style:none;color:var(--soft)}
+.package-facts li{padding-top:6px;border-top:1px solid var(--line)}
+.package-card>a,.bundle-card>a{margin-top:auto;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.addon-card .price-range,.bundle-card .price-range{margin-top:auto;color:var(--lime-text);font-size:1.2rem}
+.bundle-card ul{margin:0;padding-left:20px;color:var(--soft)}
+.pricing-block{margin-top:clamp(48px,6vw,80px)}
+h2.pricing-subhead{font-size:clamp(1.5rem,2.4vw,2.25rem)}
+.comparison-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius)}
+.comparison-table{width:100%;min-width:720px;border-collapse:collapse}
+.comparison-table :is(th,td){padding:14px 18px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+.comparison-table tbody tr:last-child>*{border-bottom:0}
+.comparison-table thead th{font-family:"Manrope Variable","DM Sans Variable",Arial,sans-serif;font-size:1.1rem}
+.comparison-table thead .price-range,.comparison-stack h3 .price-range{display:block;margin-top:4px;color:var(--lime-text);font-size:1rem}
+.comparison-table tbody th{width:22%;color:var(--soft)}
+.comparison-table td{color:var(--muted)}
+.comparison-table .is-recommended{background:rgba(212,250,69,.06)}
+.feature-yes,.feature-no{display:inline-flex;align-items:flex-start;gap:6px}
+.feature-yes{color:var(--lime-text)}
+.feature-yes svg,.feature-no svg{flex-shrink:0;margin-top:3px}
+.comparison-stack{display:none}
+.comparison-stack dl{margin:0}
+.comparison-stack dl div{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+.comparison-stack dt{color:var(--soft);font-weight:800}
+.comparison-stack dd{margin:0;color:var(--muted)}
+.pricing-note{margin:40px 0 0;padding-top:20px;border-top:1px solid var(--line);color:var(--muted)}
+[data-slot=tabs]{display:block}
+[data-slot=tabs-list].pricing-tabs{height:auto;margin-bottom:32px;padding:5px;gap:4px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.05)}
+.pricing-tabs [data-slot=tabs-trigger]{min-height:44px;padding:10px 22px;border:0;border-radius:999px;color:var(--soft);font-size:inherit;font-weight:800;cursor:pointer}
+.pricing-tabs [data-slot=tabs-trigger][data-state=active]{background:var(--lime);color:#11130f;box-shadow:none}
+.pricing-tabs [data-slot=tabs-trigger]:focus-visible{outline:2px solid var(--lime-text);outline-offset:2px}
+[data-slot=tabs-content]{font-size:inherit}
+:root:not(.dark) & :is(.package-card,.addon-card,.bundle-card),:root:not(.dark) & [data-slot=tabs-list].pricing-tabs{background:rgba(255,255,255,.66)}
+:root:not(.dark) & :is(.package-card.is-recommended,.bundle-card){border-color:var(--lime-text)}
+:root:not(.dark) & .comparison-table .is-recommended{background:rgba(212,250,69,.2)}
+@media (max-width:1180px){.addon-grid{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:900px){.package-grid,.bundle-grid{grid-template-columns:1fr}.addon-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:680px){.addon-grid{grid-template-columns:1fr}.comparison-scroll{display:none}.comparison-stack{display:grid}}
+
 /* shadcn adapters: shadcn components keep their behaviour and accessibility, these rules give them the original look.
    :where() keeps the generic resets at zero weight so the original class rules (.menu-toggle, .pill, label...) always win. */
 :where([data-slot=button]){font-size:inherit;line-height:inherit;height:auto}

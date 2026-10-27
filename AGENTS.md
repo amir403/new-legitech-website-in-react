@@ -16,6 +16,7 @@ The LegiTech.io marketing website is being rebuilt from a static site into a Rea
   - The public JSON API is in `routes/api.php`. It is read-only, except the throttled `POST /api/enquiries`.
   - The admin API is in `routes/admin.php`, under `/api/admin` with `web` middleware (session cookie + CSRF via the `XSRF-TOKEN` cookie). There are no tokens and no Sanctum; it relies on the SPA and API sharing an origin.
   - Create an admin login with `php artisan admin:create <email> <name>`.
+  - Pricing (`/api/pricing*`, `/api/admin/pricing/*`) uses API Resources and Form Requests, unlike the content endpoints. `GET /api/pricing` is cached; pricing models flush it on save/delete via `FlushesPricingCache`. Only `is_active` rows are public. See `PRICING-CHECKOUT-PLAN.md`.
   - Only published content is returned. Each model has a `published` scope; always use it in public endpoints.
   - Seed content lives in `database/seeders/content.json`. It was extracted from `legacy-static/`. The seeder never overwrites admin edits.
 - `legacy-static/`: the original static site. It is a read-only reference for design and copy; do not edit it.

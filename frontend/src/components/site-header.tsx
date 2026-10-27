@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 
 export const navLinks = [
   { to: '/services', label: 'Services' },
+  { to: '/pricing', label: 'Pricing' },
   { to: '/work', label: 'Our work' },
   { to: '/about', label: 'About' },
   { to: '/industries', label: 'Industries' },

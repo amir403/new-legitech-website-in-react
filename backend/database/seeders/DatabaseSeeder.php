@@ -31,5 +31,7 @@ class DatabaseSeeder extends Seeder
                 $model::firstOrCreate(['slug' => $row['slug']], $row);
             }
         }
+
+        $this->call(PricingSeeder::class);
     }
 }

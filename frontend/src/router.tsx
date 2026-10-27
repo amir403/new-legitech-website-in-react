@@ -9,6 +9,7 @@ import * as insightDetail from '@/pages/insight-detail'
 import * as insights from '@/pages/insights'
 import { Privacy, Terms } from '@/pages/legal'
 import * as serviceDetail from '@/pages/service-detail'
+import * as pricing from '@/pages/pricing'
 import * as services from '@/pages/services'
 import * as work from '@/pages/work'
 
@@ -33,6 +34,7 @@ export const router = createBrowserRouter([
       { index: true, Component: home.default, loader: home.loader },
       { path: 'services', Component: services.default, loader: services.loader },
       { path: 'services/:slug', Component: serviceDetail.default, loader: serviceDetail.loader },
+      { path: 'pricing', Component: pricing.default, loader: pricing.loader },
       { path: 'work', Component: work.default, loader: work.loader },
       { path: 'about', Component: About },
       { path: 'industries', Component: industries.default, loader: industries.loader },

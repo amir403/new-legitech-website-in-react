@@ -42,6 +42,38 @@ export type Industry = {
   service_slug: string | null
 }
 
+/** GET /api/pricing (Api\PricingController + Http\Resources\*). Raw prices are GBP numbers; *_display is formatted server-side. */
+export type PricedItem = {
+  id: number
+  name: string
+  description: string | null
+  min_price: number
+  max_price: number
+  price_display: string
+}
+
+export type Package = PricedItem & {
+  tier: 'starter' | 'standard' | 'premium'
+  currency: string
+  delivery_time: string
+  revisions: string
+  support_period: string
+  monthly_maintenance_min: number | null
+  monthly_maintenance_max: number | null
+  monthly_maintenance_display: string | null
+  features: { label: string; value: string }[]
+}
+
+export type Bundle = PricedItem & {
+  category: string | null
+  package: Package | null
+  addons: PricedItem[]
+}
+
+export type PricingCategory = { id: number; name: string; slug: string; packages: Package[]; addons: PricedItem[] }
+
+export type Pricing = { categories: PricingCategory[]; general_addons: PricedItem[]; bundles: Bundle[] }
+
 export type Enquiry = {
   name: string
   email: string
