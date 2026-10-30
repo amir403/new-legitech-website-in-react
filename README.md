@@ -20,6 +20,8 @@ npm install
 npm run dev                   # http://localhost:5173 (site + /admin, proxies /api to :8000)
 ```
 
+Online checkout is off until Stripe test keys are in `backend/.env`; see "To switch on test mode" in `PRICING-CHECKOUT-PLAN.md`.
+
 ## Checks
 
 ```

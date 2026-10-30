@@ -2,6 +2,7 @@ import { createBrowserRouter, data, redirect } from 'react-router'
 import { adminRoute } from '@/admin/routes'
 import { LoadingShell, RootLayout, RouteError } from '@/layouts/root-layout'
 import About from '@/pages/about'
+import * as checkout from '@/pages/checkout'
 import * as contact from '@/pages/contact'
 import * as home from '@/pages/home'
 import * as industries from '@/pages/industries'
@@ -40,6 +41,9 @@ export const router = createBrowserRouter([
       { path: 'industries', Component: industries.default, loader: industries.loader },
       { path: 'insights', Component: insights.default, loader: insights.loader },
       { path: 'insights/:slug', Component: insightDetail.default, loader: insightDetail.loader },
+      { path: 'checkout/success', Component: checkout.CheckoutSuccess, loader: checkout.successLoader, handle: noBand },
+      { path: 'checkout/cancelled', Component: checkout.CheckoutCancelled, handle: noBand },
+      { path: 'checkout/:type/:id', Component: checkout.default, loader: checkout.loader, handle: noBand },
       { path: 'contact', Component: contact.default, loader: contact.loader, handle: noBand },
       { path: 'privacy', Component: Privacy, handle: noBand },
       { path: 'terms', Component: Terms, handle: noBand },

@@ -28,6 +28,14 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    // Online checkout. Empty secret = checkout switched off (the API answers 503). Klarna, Apple Pay etc. are enabled in the Stripe Dashboard.
+    'stripe' => [
+        'secret' => env('STRIPE_SECRET'),
+        'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
+        // Where the React site lives, for Stripe's success/cancel redirects (the Vite dev server locally).
+        'site_url' => rtrim(env('SITE_URL', env('APP_URL', 'http://localhost')), '/'),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),

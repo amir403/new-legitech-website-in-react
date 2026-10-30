@@ -1,4 +1,4 @@
-import { BoxesIcon, BriefcaseIcon, ExternalLinkIcon, FactoryIcon, InboxIcon, LayersIcon, LogOutIcon, NewspaperIcon, PuzzleIcon, TagIcon, type LucideIcon } from 'lucide-react'
+import { BoxesIcon, BriefcaseIcon, ExternalLinkIcon, FactoryIcon, InboxIcon, LayersIcon, LogOutIcon, NewspaperIcon, PuzzleIcon, ReceiptIcon, TagIcon, type LucideIcon } from 'lucide-react'
 import { Link, NavLink, Outlet, redirect, useLoaderData, useLocation, useNavigate, useNavigation } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -69,6 +69,7 @@ function AdminSidebar({ email, onLogout }: { email: string; onLogout: () => void
           <SidebarGroupContent>
             <SidebarMenu>
               <NavItem to="/admin/enquiries" label="Enquiries" icon={InboxIcon} />
+              <NavItem to="/admin/orders" label="Orders" icon={ReceiptIcon} />
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

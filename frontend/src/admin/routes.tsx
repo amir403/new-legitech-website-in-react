@@ -16,6 +16,7 @@ export const adminRoute: RouteObject = {
       children: [
         { index: true, loader: () => redirect('/admin/enquiries') },
         { path: 'enquiries', lazy: async () => { const { enquiries } = await admin(); return { loader: enquiries.loader, Component: enquiries.Enquiries } } },
+        { path: 'orders', lazy: async () => { const { orders } = await admin(); return { loader: orders.loader, Component: orders.Orders } } },
         { path: ':type', lazy: async () => { const { contentList } = await admin(); return { loader: contentList.loader, Component: contentList.ContentList } } },
         { path: ':type/new', lazy: async () => { const { contentForm } = await admin(); return { loader: contentForm.loader, Component: contentForm.ContentForm } } },
         { path: ':type/:id', lazy: async () => { const { contentForm } = await admin(); return { loader: contentForm.loader, Component: contentForm.ContentForm } } },

@@ -1,12 +1,12 @@
 import { Check, Minus } from 'lucide-react'
 import { Link, useLoaderData } from 'react-router'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { get, type Bundle, type Package, type PricedItem, type Pricing as PricingData } from '@/lib/api'
+import { gbp, get, type Bundle, type Package, type PricedItem, type Pricing as PricingData } from '@/lib/api'
 
 /** One request for every tab, so switching categories never refetches. */
 export const loader = ({ request }: { request: Request }) => get<PricingData>('/pricing', request.signal)
 
-const pricingNote = 'Prices are indicative and in GBP. Your final quote depends on the scope of your project.'
+const pricingNote = 'Prices in GBP, no VAT. Buy now charges the starting price; if your project needs more, we agree the extra scope and cost with you first.'
 
 /** Contact form service to pre-select for each category. The form ignores a value that isn't one of its options. */
 const contactService: Record<string, string> = { website: 'Website & web app development', 'e-commerce': 'E-commerce development' }
@@ -76,8 +76,11 @@ function PackageCard({ pkg, index, comparison, category }: { pkg: Package; index
         </div>
       </dl>
       {pkg.monthly_maintenance_display && <p className="package-maint">Maintenance: {pkg.monthly_maintenance_display} / month</p>}
-      <Link className={recommended ? 'pill package-cta' : 'outline-button package-cta'} to={contactLink(`${pkg.name} package`, pkg.price_display, category)} aria-label={`Get started with the ${pkg.name} package`}>
-        Get started <span aria-hidden="true">↗</span>
+      <Link className={recommended ? 'pill package-cta' : 'outline-button package-cta'} to={`/checkout/package/${pkg.id}`} aria-label={`Buy the ${pkg.name} package for ${gbp(pkg.min_price)}`}>
+        Buy now · {gbp(pkg.min_price)} <span aria-hidden="true">↗</span>
+      </Link>
+      <Link className="package-quote" to={contactLink(`${pkg.name} package`, pkg.price_display, category)}>
+        or ask for a custom quote
       </Link>
       {/* Phones get the full feature list here instead of the comparison table. */}
       <details className="package-details">
@@ -146,7 +149,12 @@ function AddonsSection({ addons }: { addons: PricedItem[] }) {
               <h3>{a.name}</h3>
               {a.description && <p>{a.description}</p>}
             </div>
-            <PriceRange display={a.price_display} />
+            <span className="addon-buy">
+              <PriceRange display={a.price_display} />
+              <Link to={`/checkout/addon/${a.id}`} aria-label={`Buy ${a.name} for ${gbp(a.min_price)}`}>
+                Buy
+              </Link>
+            </span>
           </li>
         ))}
       </ul>
@@ -174,8 +182,11 @@ function BundleCard({ bundle }: { bundle: Bundle }) {
       </div>
       <div className="bundle-buy">
         <PriceRange display={bundle.price_display} />
-        <Link className="pill package-cta" to={contactLink(bundle.name, bundle.price_display, bundle.category ?? undefined)} aria-label={`Get started with the ${bundle.name}`}>
-          Get started <span aria-hidden="true">↗</span>
+        <Link className="pill package-cta" to={`/checkout/bundle/${bundle.id}`} aria-label={`Buy the ${bundle.name} for ${gbp(bundle.min_price)}`}>
+          Buy now · {gbp(bundle.min_price)} <span aria-hidden="true">↗</span>
+        </Link>
+        <Link className="package-quote" to={contactLink(bundle.name, bundle.price_display, bundle.category ?? undefined)}>
+          or ask a question first
         </Link>
       </div>
     </article>

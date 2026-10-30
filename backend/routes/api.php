@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\CheckoutController;
 use App\Http\Controllers\Api\ContentController;
 use App\Http\Controllers\Api\EnquiryController;
 use App\Http\Controllers\Api\PricingController;
@@ -20,6 +21,11 @@ Route::controller(PricingController::class)->prefix('pricing')->group(function (
     Route::get('addons', 'addons');
     Route::get('bundles', 'bundles');
 });
+
+Route::post('checkout', [CheckoutController::class, 'store'])->middleware('throttle:10,1');
+Route::get('checkout/{sessionId}', [CheckoutController::class, 'show']);
+// Called by Stripe, not the site: authenticated by its signature, so no throttle.
+Route::post('stripe/webhook', [CheckoutController::class, 'webhook']);
 
 Route::get('enquiry-options', [EnquiryController::class, 'options']);
 Route::post('enquiries', [EnquiryController::class, 'store'])->middleware('throttle:5,1');

@@ -102,6 +102,31 @@ export async function get<T>(path: string, signal?: AbortSignal): Promise<T> {
   return (await res.json()).data
 }
 
+/** Api\CheckoutController. The server charges the item's min_price; the browser never sends an amount. */
+export type ItemType = 'package' | 'bundle' | 'addon'
+
+export type CheckoutRequest = { item_type: ItemType; item_id: number; name: string; email: string; company: string; notes: string; accept_terms: boolean; website: string }
+
+export type OrderStatus = { reference: string; item_name: string; amount: number; status: 'pending' | 'paid' | 'failed' | 'expired' | 'refunded' }
+
+/** £1,200 or £3.50: pence only when there are some. */
+export const gbp = (n: number) => '£' + n.toLocaleString('en-GB', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 })
+
+/** Returns the Stripe Checkout URL to send the visitor to. */
+export async function startCheckout(request: CheckoutRequest): Promise<string> {
+  const res = await fetch(base + '/checkout', {
+    method: 'POST',
+    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(request),
+  })
+  const json = await res.json().catch(() => ({}))
+  if (res.status === 422) throw new ValidationError(json.errors ?? {})
+  if (res.status === 429) throw new Error('Too many attempts from this connection. Please try again in a minute.')
+  // 503 = checkout switched off, 502 = Stripe unreachable; both carry a message written for visitors.
+  if (!res.ok) throw new Error(json.message || 'We could not start the payment. Please try again.')
+  return json.url
+}
+
 export async function postEnquiry(enquiry: Enquiry): Promise<void> {
   const res = await fetch(base + '/enquiries', {
     method: 'POST',

@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AuthController;
 use App\Http\Controllers\Admin\BundleController;
 use App\Http\Controllers\Admin\ContentController;
 use App\Http\Controllers\Admin\EnquiryController;
+use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\PackageController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,8 @@ Route::middleware('auth')->group(function () {
     Route::get('enquiries', [EnquiryController::class, 'index']);
     Route::patch('enquiries/{enquiry}', [EnquiryController::class, 'update']);
     Route::delete('enquiries/{enquiry}', [EnquiryController::class, 'destroy']);
+
+    Route::get('orders', [OrderController::class, 'index']);
 
     Route::prefix('pricing')->group(function () {
         Route::apiResource('packages', PackageController::class);

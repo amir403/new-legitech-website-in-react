@@ -13,10 +13,11 @@ The LegiTech.io marketing website is being rebuilt from a static site into a Rea
   - `src/lib/api.ts` has the API types and fetch helpers. Keep the types in step with `backend/app/Http/Controllers/Api/*`.
   - shadcn theme tokens live in `src/index.css` (`:root` is light, `.dark` is dark). In `site.css`, lime text uses `--lime-text`, which is olive in light mode for contrast.
 - `backend/`: Laravel 13 with MySQL (`legitech` database on XAMPP MariaDB). No admin package: the admin is part of the React app.
-  - The public JSON API is in `routes/api.php`. It is read-only, except the throttled `POST /api/enquiries`.
+  - The public JSON API is in `routes/api.php`. It is read-only, except the throttled `POST /api/enquiries` and `POST /api/checkout`, and Stripe's `POST /api/stripe/webhook`.
   - The admin API is in `routes/admin.php`, under `/api/admin` with `web` middleware (session cookie + CSRF via the `XSRF-TOKEN` cookie). There are no tokens and no Sanctum; it relies on the SPA and API sharing an origin.
   - Create an admin login with `php artisan admin:create <email> <name>`.
   - Pricing (`/api/pricing*`, `/api/admin/pricing/*`) uses API Resources and Form Requests, unlike the content endpoints. `GET /api/pricing` is cached; pricing models flush it on save/delete via `FlushesPricingCache`. Only `is_active` rows are public. See `PRICING-CHECKOUT-PLAN.md`.
+  - Checkout (`POST /api/checkout`, `POST /api/stripe/webhook`) charges the item's `min_price` from the DB, never an amount from the browser. Orders become paid only through the signature-verified webhook. All Stripe calls go through `App\Services\StripeCheckout`, so tests mock it.
   - Only published content is returned. Each model has a `published` scope; always use it in public endpoints.
   - Seed content lives in `database/seeders/content.json`. It was extracted from `legacy-static/`. The seeder never overwrites admin edits.
 - `legacy-static/`: the original static site. It is a read-only reference for design and copy; do not edit it.
