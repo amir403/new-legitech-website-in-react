@@ -7,7 +7,8 @@
 | Pricing data (DB, seeder, public API, admin API, cache, tests) | **Done** |
 | Pricing page `/pricing` (tabs, packages, comparison table, add-ons, bundles) | **Done** |
 | "Get started" → contact form pre-filled with service + package | **Done** |
-| Admin screens for editing prices (the admin API exists; no UI yet) | Not started |
+| Admin screens: Pricing → Packages, Add-ons, Bundles in `/admin` | **Done** |
+| Home page band with starting prices, linking to `/pricing` | **Done** |
 | Online checkout (Stripe Checkout + Klarna) | Not started — see "Checkout (later)" |
 
 ## How pricing works
@@ -37,9 +38,7 @@ Validation: `max_price >= min_price`; `sort_order` unique within the same catego
 
 ## Next steps
 
-1. **Admin screens** for packages, add-ons and bundles (price edit at minimum) in `src/admin/`.
-2. **Home page teaser**: a short "Pricing from £450" block linking to `/pricing`.
-3. **Checkout (later)**, only if fixed prices are wanted. Ranges can't be charged, so this needs either a fixed price per package or a deposit:
+1. **Checkout (later)**, only if fixed prices are wanted. Ranges can't be charged, so this needs either a fixed price per package or a deposit:
    - Stripe Checkout (hosted page; cards, Apple Pay, Google Pay). Klarna is switched on in the Stripe Dashboard, with no separate integration; confirm the account is eligible first.
    - The server sets the amount from the DB (never from the browser); an `orders` table; the order is marked paid only by the Stripe webhook (`checkout.session.completed`, `async_payment_succeeded/failed`, `expired`).
    - Terms of sale + refund/cancellation policy (UK 14-day cancellation right for online services), privacy update, VAT decision.

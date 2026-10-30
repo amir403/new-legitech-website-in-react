@@ -15,18 +15,19 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table'
 import { adminFetch } from './api'
-import { findType } from './content-types'
+import { apiPath, findType } from './content-types'
 
-export type Row = { id: number; slug: string; is_published?: boolean; published_at?: string | null; sort_order?: number } & Record<string, unknown>
+export type Row = { id: number; slug: string; is_published?: boolean; is_active?: boolean; published_at?: string | null; sort_order?: number } & Record<string, unknown>
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const type = findType(params.type)
   if (!type) throw new Response(null, { status: 404 })
-  return { typeKey: type.key, rows: (await adminFetch<{ data: Row[] }>('GET', `/${type.key}`)).data }
+  return { typeKey: type.key, rows: (await adminFetch<{ data: Row[] }>('GET', apiPath(type))).data }
 }
 
 function status(row: Row) {
   if ('is_published' in row) return row.is_published ? 'Published' : 'Hidden'
+  if ('is_active' in row) return row.is_active ? 'Published' : 'Hidden'
   if (!row.published_at) return 'Draft'
   return new Date(row.published_at) > new Date() ? 'Scheduled' : 'Published'
 }
@@ -38,7 +39,7 @@ export function ContentList() {
 
   async function remove(row: Row) {
     try {
-      await adminFetch('DELETE', `/${type.key}/${row.id}`)
+      await adminFetch('DELETE', `${apiPath(type)}/${row.id}`)
       toast.success(`Deleted “${String(row[type.title])}”.`)
       revalidate()
     } catch (e) {
@@ -59,7 +60,7 @@ export function ContentList() {
           <TableHeader>
             <TableRow>
               <TableHead>{type.title === 'title' ? 'Title' : 'Name'}</TableHead>
-              <TableHead className="hidden md:table-cell">Slug</TableHead>
+              <TableHead className="hidden md:table-cell">{type.meta ? 'Category · price' : 'Slug'}</TableHead>
               <TableHead>Status</TableHead>
               <TableHead className="text-right">Actions</TableHead>
             </TableRow>
@@ -79,7 +80,7 @@ export function ContentList() {
                     {String(row[type.title])}
                   </Link>
                 </TableCell>
-                <TableCell className="hidden text-muted-foreground md:table-cell">{row.slug}</TableCell>
+                <TableCell className="hidden text-muted-foreground md:table-cell">{type.meta ? type.meta(row) : row.slug}</TableCell>
                 <TableCell>
                   <Badge variant={status(row) === 'Published' ? 'default' : 'secondary'}>{status(row)}</Badge>
                 </TableCell>
@@ -97,7 +98,7 @@ export function ContentList() {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Delete “{String(row[type.title])}”?</AlertDialogTitle>
                         <AlertDialogDescription>
-                          This removes it from the website and cannot be undone. To hide it temporarily, unpublish it instead.
+                          This removes it from the website and cannot be undone. To hide it temporarily, switch it off in the edit form instead.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>

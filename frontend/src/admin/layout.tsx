@@ -1,4 +1,4 @@
-import { BriefcaseIcon, ExternalLinkIcon, FactoryIcon, InboxIcon, LayersIcon, LogOutIcon, NewspaperIcon, type LucideIcon } from 'lucide-react'
+import { BoxesIcon, BriefcaseIcon, ExternalLinkIcon, FactoryIcon, InboxIcon, LayersIcon, LogOutIcon, NewspaperIcon, PuzzleIcon, TagIcon, type LucideIcon } from 'lucide-react'
 import { Link, NavLink, Outlet, redirect, useLoaderData, useLocation, useNavigate, useNavigation } from 'react-router'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
@@ -31,8 +31,10 @@ export async function loader() {
   return me
 }
 
-const icons: Record<string, LucideIcon> = { services: LayersIcon, insights: NewspaperIcon, 'work-concepts': BriefcaseIcon, industries: FactoryIcon }
-const contentNav = contentTypes.map((t) => ({ to: `/admin/${t.key}`, label: t.label, icon: icons[t.key] }))
+const icons: Record<string, LucideIcon> = { services: LayersIcon, insights: NewspaperIcon, 'work-concepts': BriefcaseIcon, industries: FactoryIcon, 'pricing-packages': TagIcon, 'pricing-addons': PuzzleIcon, 'pricing-bundles': BoxesIcon }
+const nav = (types: typeof contentTypes) => types.map((t) => ({ to: `/admin/${t.key}`, label: t.label, icon: icons[t.key] }))
+const contentNav = nav(contentTypes.filter((t) => !t.group))
+const pricingNav = nav(contentTypes.filter((t) => t.group === 'pricing'))
 
 function NavItem({ to, label, icon: Icon }: { to: string; label: string; icon: LucideIcon }) {
   const { pathname } = useLocation()
@@ -75,6 +77,16 @@ function AdminSidebar({ email, onLogout }: { email: string; onLogout: () => void
           <SidebarGroupContent>
             <SidebarMenu>
               {contentNav.map((n) => (
+                <NavItem key={n.to} {...n} />
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Pricing</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {pricingNav.map((n) => (
                 <NavItem key={n.to} {...n} />
               ))}
             </SidebarMenu>

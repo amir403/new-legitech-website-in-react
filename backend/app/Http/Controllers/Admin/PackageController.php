@@ -14,7 +14,7 @@ class PackageController extends Controller
 {
     public function index(): JsonResponse
     {
-        return response()->json(['data' => Package::with('features')->orderBy('pricing_category_id')->ordered()->get()]);
+        return response()->json(['data' => Package::with(['features', 'category:id,name'])->orderBy('pricing_category_id')->ordered()->get()]);
     }
 
     public function show(Package $package): JsonResponse

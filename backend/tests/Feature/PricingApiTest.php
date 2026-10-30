@@ -182,7 +182,10 @@ class PricingApiTest extends TestCase
         $this->admin()->putJson("/api/admin/pricing/bundles/{$bundle->id}", [
             'pricing_category_id' => null, 'package_id' => null, 'name' => $bundle->name, 'description' => null,
             'min_price' => 100, 'max_price' => 150, 'is_active' => true, 'sort_order' => $bundle->sort_order, 'addon_ids' => [$logo],
-        ])->assertOk()->assertJsonCount(1, 'data.addons');
+        ])->assertOk()->assertJsonCount(1, 'data.addons')->assertJsonPath('data.addon_ids', [$logo]);
+
+        $this->getJson("/api/admin/pricing/bundles/{$bundle->id}")->assertJsonPath('data.addon_ids', [$logo]);
+        $this->getJson('/api/admin/pricing/packages')->assertJsonPath('data.0.category.name', 'Website');
 
         $this->getJson('/api/pricing/bundles')->assertJsonPath('data.0.price_display', '£100 – £150')->assertJsonCount(1, 'data.0.addons');
     }

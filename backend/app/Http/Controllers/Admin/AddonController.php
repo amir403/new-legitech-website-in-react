@@ -12,7 +12,7 @@ class AddonController extends Controller
 {
     public function index(): JsonResponse
     {
-        return response()->json(['data' => Addon::orderBy('pricing_category_id')->ordered()->get()]);
+        return response()->json(['data' => Addon::with('category:id,name')->orderBy('pricing_category_id')->ordered()->get()]);
     }
 
     public function show(Addon $addon): JsonResponse

@@ -2,16 +2,21 @@ import { Link, useLoaderData } from 'react-router'
 import { ArticleCards, IndustryGrid, ProcessGrid, ProjectCards, ServiceCards } from '@/components/blocks'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Button } from '@/components/ui/button'
-import { get, type Industry, type Insight, type Service, type WorkConcept } from '@/lib/api'
+import { get, type Industry, type Insight, type Pricing, type Service, type WorkConcept } from '@/lib/api'
 
 export async function loader({ request }: { request: Request }) {
-  const [services, concepts, industries, insights] = await Promise.all([
+  const [services, concepts, industries, insights, pricing] = await Promise.all([
     get<Service[]>('/services', request.signal),
     get<WorkConcept[]>('/work-concepts', request.signal),
     get<Industry[]>('/industries', request.signal),
     get<Insight[]>('/insights', request.signal),
+    // Optional: the home page still renders without the pricing band.
+    get<Pricing>('/pricing', request.signal).catch(() => null),
   ])
-  return { services, concepts, industries, insights: insights.slice(0, 3) }
+  const startingPrices = (pricing?.categories ?? [])
+    .filter((c) => c.packages.length)
+    .map((c) => ({ slug: c.slug, name: c.name, from: Math.min(...c.packages.map((p) => p.min_price)) }))
+  return { services, concepts, industries, insights: insights.slice(0, 3), startingPrices }
 }
 
 const principles = [
@@ -33,7 +38,7 @@ const faqs = [
 ]
 
 export default function Home() {
-  const { services, concepts, industries, insights } = useLoaderData<typeof loader>()
+  const { services, concepts, industries, insights, startingPrices } = useLoaderData<typeof loader>()
   return (
     <>
       <title>LegiTech.io | Complexity. Made simple.</title>
@@ -108,6 +113,27 @@ export default function Home() {
           </div>
         </div>
         <ServiceCards services={services} />
+        {startingPrices.length > 0 && (
+          <div className="pricing-teaser">
+            <div>
+              <h3>Clear pricing, before we start.</h3>
+              <p>Fixed-scope packages with indicative price ranges in GBP.</p>
+              <Link className="under-link" to="/pricing">
+                See all pricing <span aria-hidden="true">↗</span>
+              </Link>
+            </div>
+            <ul>
+              {startingPrices.map((c) => (
+                <li key={c.slug}>
+                  <Link to="/pricing">
+                    <span>{c.name} packages</span>
+                    <b>from £{c.from.toLocaleString('en-GB')}</b>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </section>
 
       <section className="section">

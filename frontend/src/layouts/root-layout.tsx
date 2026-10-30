@@ -44,6 +44,8 @@ export function RouteError() {
   if (!notFound) console.error(error)
   return (
     <Shell>
+      <title>{notFound ? 'Page not found | LegiTech.io' : 'Something went wrong | LegiTech.io'}</title>
+      <meta name="robots" content="noindex" />
       <section className="page-hero section">
         <p className="eyebrow">{notFound ? '404 / PAGE NOT FOUND' : 'SOMETHING WENT WRONG'}</p>
         <h1>

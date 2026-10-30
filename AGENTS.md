@@ -9,7 +9,7 @@ The LegiTech.io marketing website is being rebuilt from a static site into a Rea
   - `src/pages/*` holds one file per route. A page that fetches data exports `loader` plus a default component.
   - `src/components/ui/*` is shadcn-generated. Add components with `npx shadcn@latest add <name>` and avoid hand-editing them.
   - Public pages reproduce the markup and class names of `legacy-static/*.html`. Their look comes from `src/styles/site.css`, the original stylesheet scoped under `.site` and left unlayered so it wins over shadcn utilities. A "shadcn adapters" block at its end styles the shadcn components used there. `components/blocks.tsx` has the shared content grids.
-  - `src/admin/*` is the admin (lazy-loaded at `/admin`). It uses plain shadcn styling. Its field definitions in `content-types.ts` must match the rules in `backend/app/Http/Controllers/Admin/ContentController.php`.
+  - `src/admin/*` is the admin (lazy-loaded at `/admin`). It uses plain shadcn styling. Its field definitions in `content-types.ts` must match the rules in `backend/app/Http/Controllers/Admin/ContentController.php` (and, for the pricing types, the Form Requests in `backend/app/Http/Requests/Admin/`).
   - `src/lib/api.ts` has the API types and fetch helpers. Keep the types in step with `backend/app/Http/Controllers/Api/*`.
   - shadcn theme tokens live in `src/index.css` (`:root` is light, `.dark` is dark). In `site.css`, lime text uses `--lime-text`, which is olive in light mode for contrast.
 - `backend/`: Laravel 13 with MySQL (`legitech` database on XAMPP MariaDB). No admin package: the admin is part of the React app.

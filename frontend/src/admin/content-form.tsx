@@ -10,18 +10,24 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { AdminValidationError, adminFetch } from './api'
-import { findType, type Field } from './content-types'
+import { get, type Pricing } from '@/lib/api'
+import { apiPath, findType, type Field } from './content-types'
 import type { Row } from './content-list'
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const type = findType(params.type)
   if (!type) throw new Response(null, { status: 404 })
-  const needsServices = type.fields.some((f) => f.kind === 'service' || f.kind === 'services')
-  const [row, services] = await Promise.all([
-    params.id ? adminFetch<{ data: Row }>('GET', `/${type.key}/${params.id}`).then((r) => r.data) : null,
-    needsServices ? adminFetch<{ data: Row[] }>('GET', '/services').then((r) => r.data.map((s) => ({ slug: s.slug, name: String(s.name) }))) : [],
+  const needs = (...kinds: Field['kind'][]) => type.fields.some((f) => kinds.includes(f.kind))
+  const options = (path: string) => adminFetch<{ data: Row[] }>('GET', path).then((r) => r.data.map((o) => ({ id: o.id, name: String(o.name) })))
+  const [row, services, categories, packages, addons] = await Promise.all([
+    params.id ? adminFetch<{ data: Row }>('GET', `${apiPath(type)}/${params.id}`).then((r) => r.data) : null,
+    needs('service', 'services') ? adminFetch<{ data: Row[] }>('GET', '/services').then((r) => r.data.map((s) => ({ slug: s.slug, name: String(s.name) }))) : [],
+    // Categories have no admin endpoint; the public pricing response lists them all.
+    needs('category') ? get<Pricing>('/pricing').then((p) => p.categories.map((c) => ({ id: c.id, name: c.name }))) : [],
+    needs('package') ? options('/pricing/packages') : [],
+    needs('addons') ? options('/pricing/addons') : [],
   ])
-  return { typeKey: type.key, row, services }
+  return { typeKey: type.key, row, services, categories, packages, addons }
 }
 
 type Values = Record<string, unknown>
@@ -35,10 +41,10 @@ const toLocalInput = (iso: unknown) => {
 }
 
 export function ContentForm() {
-  const { typeKey, row, services } = useLoaderData<typeof loader>()
+  const { typeKey, row, services, categories, packages, addons } = useLoaderData<typeof loader>()
   const type = findType(typeKey)!
   const navigate = useNavigate()
-  const [values, setValues] = useState<Values>(() => (row ? { ...type.empty, ...row } : { slug: '', ...type.empty }))
+  const [values, setValues] = useState<Values>(() => (row ? { ...type.empty, ...row } : type.slug === false ? { ...type.empty } : { slug: '', ...type.empty }))
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [saving, setSaving] = useState(false)
   const set = (name: string, value: unknown) => setValues((v) => ({ ...v, [name]: value }))
@@ -49,11 +55,11 @@ export function ContentForm() {
     setErrors({})
     try {
       if (row) {
-        await adminFetch('PUT', `/${type.key}/${row.id}`, values)
+        await adminFetch('PUT', `${apiPath(type)}/${row.id}`, values)
         toast.success('Saved.')
       } else {
-        await adminFetch('POST', `/${type.key}`, values)
-        toast.success(`Created. It is ${values.is_published === false || values.published_at === null ? 'hidden until you publish it' : 'live'}.`)
+        await adminFetch('POST', apiPath(type), values)
+        toast.success(`Created. It is ${values.is_published === false || values.is_active === false || values.published_at === null ? 'hidden until you publish it' : 'live'}.`)
       }
       navigate(`/admin/${type.key}`)
     } catch (err) {
@@ -82,6 +88,103 @@ export function ContentForm() {
         return <Textarea id={id} rows={3} value={String(v ?? '')} onChange={(e) => set(f.name, e.target.value)} aria-invalid={invalid} />
       case 'number':
         return <Input id={id} type="number" className="w-32" value={String(v ?? 0)} onChange={(e) => set(f.name, e.target.valueAsNumber || 0)} aria-invalid={invalid} />
+      case 'money':
+        return (
+          <Input
+            id={id}
+            type="number"
+            min={0}
+            step="0.01"
+            inputMode="decimal"
+            className="w-40"
+            value={v === null || v === undefined ? '' : String(v)}
+            // Optional amounts stay null when cleared (an open-ended maintenance price shows as "£150+").
+            onChange={(e) => set(f.name, e.target.value === '' ? (f.optional ? null : 0) : e.target.valueAsNumber)}
+            aria-invalid={invalid}
+          />
+        )
+      case 'select':
+        return (
+          <Select value={String(v ?? '')} onValueChange={(s) => set(f.name, s)}>
+            <SelectTrigger id={id} className="w-72" aria-invalid={invalid}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {f.options.map((o) => (
+                <SelectItem key={o.value} value={o.value}>
+                  {o.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )
+      case 'category':
+      case 'package': {
+        const list = f.kind === 'category' ? categories : packages
+        return (
+          <Select value={v === null || v === undefined ? NONE : String(v)} onValueChange={(s) => set(f.name, s === NONE ? null : Number(s))}>
+            <SelectTrigger id={id} className="w-72" aria-invalid={invalid}>
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value={NONE} disabled={!f.optional}>
+                {f.kind === 'package' ? 'None' : f.optional ? 'All categories' : 'Choose a category'}
+              </SelectItem>
+              {list.map((o) => (
+                <SelectItem key={o.id} value={String(o.id)}>
+                  {o.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        )
+      }
+      case 'addons': {
+        const selected = (v as number[]) ?? []
+        return (
+          <div className="grid gap-2 sm:grid-cols-2">
+            {addons.map((a) => (
+              <Label key={a.id} className="font-normal">
+                <Checkbox checked={selected.includes(a.id)} onCheckedChange={(c) => set(f.name, c ? [...selected, a.id] : selected.filter((x) => x !== a.id))} />
+                {a.name}
+              </Label>
+            ))}
+          </div>
+        )
+      }
+      case 'features': {
+        const rows = (v as { label: string; value: string }[]) ?? []
+        const update = (i: number, patch: Partial<{ label: string; value: string }>) => set('features', rows.map((r, j) => (j === i ? { ...r, ...patch } : r)))
+        const move = (i: number, by: number) => {
+          const next = [...rows]
+          ;[next[i], next[i + by]] = [next[i + by], next[i]]
+          set('features', next)
+        }
+        return (
+          <div className="grid gap-2">
+            {rows.map((r, i) => (
+              <div key={i} className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.6fr)_auto] sm:items-center">
+                <Input aria-label={`Row ${i + 1} label`} placeholder="Label, e.g. Pages" value={r.label} onChange={(e) => update(i, { label: e.target.value })} aria-invalid={errors[`features.${i}.label`] ? true : undefined} />
+                <Input aria-label={`Row ${i + 1} value`} placeholder="Value, e.g. Up to 8 pages" value={r.value} onChange={(e) => update(i, { value: e.target.value })} aria-invalid={errors[`features.${i}.value`] ? true : undefined} />
+                <div className="flex gap-1">
+                  <Button type="button" variant="ghost" size="sm" disabled={i === 0} onClick={() => move(i, -1)} aria-label={`Move row ${i + 1} up`}>
+                    ↑
+                  </Button>
+                  <Button type="button" variant="ghost" size="sm" disabled={i === rows.length - 1} onClick={() => move(i, 1)} aria-label={`Move row ${i + 1} down`}>
+                    ↓
+                  </Button>
+                  <Button type="button" variant="ghost" size="sm" onClick={() => set('features', rows.filter((_, j) => j !== i))}>
+                    Remove
+                  </Button>
+                </div>
+              </div>
+            ))}
+            <Button type="button" variant="outline" className="justify-self-start" onClick={() => set('features', [...rows, { label: '', value: '' }])}>
+              Add row
+            </Button>
+          </div>
+        )
+      }
       case 'switch':
         return <Switch id={id} checked={Boolean(v)} onCheckedChange={(c) => set(f.name, c)} />
       case 'datetime':
@@ -174,8 +277,9 @@ export function ContentForm() {
           <Link to={`/admin/${type.key}`}>← Back</Link>
         </Button>
       </div>
-      <div className="grid gap-2">
-        <Label htmlFor="f-slug">URL slug</Label>
+      {type.slug !== false && (
+        <div className="grid gap-2">
+          <Label htmlFor="f-slug">URL slug</Label>
         {row ? (
           <p className="text-sm text-muted-foreground">
             <code>{row.slug}</code> (fixed after creation, because site links depend on it)
@@ -186,8 +290,9 @@ export function ContentForm() {
             <p className="text-sm text-muted-foreground">Lowercase letters, numbers and dashes. It cannot be changed later.</p>
           </>
         )}
-        {errors.slug && <p className="text-sm text-destructive">{errors.slug}</p>}
-      </div>
+          {errors.slug && <p className="text-sm text-destructive">{errors.slug}</p>}
+        </div>
+      )}
       {type.fields.map((f) => (
         <div key={f.name} className="grid gap-2">
           <Label htmlFor={`f-${f.name}`}>

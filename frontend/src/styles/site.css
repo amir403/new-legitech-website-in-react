@@ -87,6 +87,23 @@ summary,.faqs [data-slot=accordion-trigger]{font-size:1.1rem;padding-block:20px}
 /* Nav: keep labels on one line now that it has a Pricing link; tighter spacing between tablet and desktop. */
 .nav nav a{white-space:nowrap}
 @media (min-width:901px) and (max-width:1280px){.nav{gap:12px}.nav nav{gap:0}.nav nav a{padding:10px 9px}.nav-cta{padding:10px 14px}}
+/* Keyboard focus: one themed ring for links and controls (the original only styled form fields, in lime that fades on the light theme). */
+:is(a,button,summary,[role=tab]):focus-visible{outline:2px solid var(--lime-text);outline-offset:3px}
+:root:not(.dark) & :is(input,select,textarea):focus{outline-color:var(--lime-text)}
+/* The logo PNG is a white wordmark; on the light header invert it and turn the box olive like --lime-text. The footer stays dark. */
+:root:not(.dark) & .nav .site-logo{filter:invert(1) hue-rotate(68deg) saturate(1.6) brightness(.75)}
+
+/* Home: pricing band under the services grid (pages/home.tsx). */
+.pricing-teaser{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:20px clamp(28px,4vw,56px);margin-top:28px;padding:24px 28px;border:1px solid var(--line);border-radius:var(--radius);background:rgba(255,255,255,.045)}
+.pricing-teaser h3{margin:0 0 4px}
+.pricing-teaser p{margin:0 0 6px;color:var(--muted)}
+.pricing-teaser ul{display:flex;gap:10px;margin:0;padding:0;list-style:none}
+.pricing-teaser li a{display:flex;flex-direction:column;gap:2px;min-width:170px;padding:12px 18px;border:1px solid var(--line);border-radius:var(--radius);transition:border-color .18s ease,transform .18s ease}
+.pricing-teaser li a:hover{border-color:var(--lime-text);transform:translateY(-2px)}
+.pricing-teaser li span{color:var(--muted);font-size:.85rem;font-weight:700}
+.pricing-teaser li b{font-family:"Manrope Variable","DM Sans Variable",Arial,sans-serif;font-size:1.3rem;font-variant-numeric:tabular-nums}
+:root:not(.dark) & .pricing-teaser{background:rgba(255,255,255,.66)}
+@media (max-width:680px){.pricing-teaser{grid-template-columns:1fr;padding:20px}.pricing-teaser ul{flex-direction:column}.pricing-teaser li a{min-width:0}}
 
 /* Pricing page (pages/pricing.tsx). Same tokens as the original sections; the recommended package borrows the lime CTA band. */
 .pricing-hero{padding-bottom:clamp(20px,3vw,36px)}

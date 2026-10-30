@@ -14,22 +14,22 @@ class BundleController extends Controller
 {
     public function index(): JsonResponse
     {
-        return response()->json(['data' => Bundle::with('addons:id,name')->ordered()->get()]);
+        return response()->json(['data' => Bundle::with(['addons:id,name', 'category:id,name'])->ordered()->get()]);
     }
 
     public function show(Bundle $bundle): JsonResponse
     {
-        return response()->json(['data' => $bundle->load('addons:id,name')]);
+        return response()->json(['data' => $this->withAddonIds($bundle)]);
     }
 
     public function store(BundleRequest $request): JsonResponse
     {
-        return response()->json(['data' => $this->save(new Bundle, $request->validated())], 201);
+        return response()->json(['data' => $this->withAddonIds($this->save(new Bundle, $request->validated()))], 201);
     }
 
     public function update(BundleRequest $request, Bundle $bundle): JsonResponse
     {
-        return response()->json(['data' => $this->save($bundle, $request->validated())]);
+        return response()->json(['data' => $this->withAddonIds($this->save($bundle, $request->validated()))]);
     }
 
     public function price(PriceRequest $request, Bundle $bundle): JsonResponse
@@ -44,6 +44,14 @@ class BundleController extends Controller
         $bundle->delete();
 
         return response()->json(null, 204);
+    }
+
+    /** The admin form edits add-ons as a list of ids. */
+    private function withAddonIds(Bundle $bundle): array
+    {
+        $bundle->load('addons:id,name');
+
+        return [...$bundle->toArray(), 'addon_ids' => $bundle->addons->pluck('id')->all()];
     }
 
     private function save(Bundle $bundle, array $data): Bundle
