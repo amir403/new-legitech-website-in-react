@@ -32,8 +32,6 @@ return [
     'stripe' => [
         'secret' => env('STRIPE_SECRET'),
         'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
-        // Where the React site lives, for Stripe's success/cancel redirects (the Vite dev server locally).
-        'site_url' => rtrim(env('SITE_URL', env('APP_URL', 'http://localhost')), '/'),
     ],
 
     'slack' => [

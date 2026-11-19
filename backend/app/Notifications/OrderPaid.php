@@ -40,6 +40,6 @@ class OrderPaid extends Notification
             ->line("**Email:** {$o->customer_email}")
             ->line('**Company:** '.($o->company ?: 'Not provided'))
             ->line('**Notes:** '.($o->notes ?: 'None'))
-            ->action('Open orders in admin', config('services.stripe.site_url').'/admin/orders');
+            ->action('Open orders in admin', config('app.site_url').'/admin/orders');
     }
 }

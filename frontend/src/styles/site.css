@@ -74,6 +74,8 @@ summary,.faqs [data-slot=accordion-trigger]{font-size:1.1rem;padding-block:20px}
 .round-cta{width:clamp(96px,10vw,148px);font-size:clamp(2rem,4vw,3.5rem)}
 .site-logo{width:min(180px,40vw)}
 .section{padding:clamp(48px,6vw,88px) 0}
+/* The CTA band is also a .section but full-bleed: keep the original side padding the line above would remove. */
+.contact.section{padding-inline:var(--pad)}
 .section-heading{margin-bottom:28px}
 .page-hero{padding-top:clamp(48px,7vw,96px);padding-bottom:clamp(32px,4vw,56px)}
 .hero{min-height:auto;padding:40px 0 24px;gap:32px}

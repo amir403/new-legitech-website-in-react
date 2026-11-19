@@ -15,7 +15,7 @@ legitech-new/
 
 - **Admin: React + shadcn at `/admin`, in the same app (lazy-loaded).** Laravel session login, with no Filament and no Sanctum.
 - **Design fidelity: the original `style.css` is reused, scoped under `.site`**, and the JSX reproduces the original markup. shadcn supplies the interactive parts (Button, Accordion, Select, Input, Textarea, Label).
-- **Public API is read-only except `POST /api/enquiries`**, so it needs no API tokens. The enquiry endpoint is validated and rate limited.
+- **Public API is read-only except `POST /api/enquiries` and `POST /api/checkout`** (plus Stripe's signed `POST /api/stripe/webhook`), so it needs no API tokens. Both form endpoints are validated and rate limited.
 - **Content in MySQL, seeded from the legacy pages**, so the first run shows exactly today's content.
 - **Work-page mockup visuals stay as React components**, picked by the concept's `slug`. They are bespoke markup, not content.
 - **Contact form now really sends.** It saves to the DB and emails the team. Copy/download of the brief stays as a bonus. Privacy page copy must be updated to match.
@@ -30,6 +30,7 @@ legitech-new/
 | industries | slug, name, summary, sort_order |
 | enquiries | name, email, company, service, budget, timeline, idea, status (new/contacted/closed), timestamps |
 | users | admin logins (`php artisan admin:create`) |
+| pricing_categories, packages, package_features, addons, bundles, orders | see `PRICING-CHECKOUT-PLAN.md` |
 
 ## API
 
@@ -46,6 +47,8 @@ GET|POST /api/admin/{type}    GET|PUT|DELETE /api/admin/{type}/{id}   type = ser
 GET  /api/admin/enquiries     PATCH|DELETE /api/admin/enquiries/{id}  (status only)
 ```
 
+Pricing (`/api/pricing*`, `/api/admin/pricing/*`), checkout (`/api/checkout*`, `/api/stripe/webhook`) and `/api/admin/orders` are listed in `PRICING-CHECKOUT-PLAN.md`. `GET /sitemap.xml` is served by Laravel too.
+
 ## Phases
 
 1. **Scaffold** (done) — move static site to `legacy-static/`, create `frontend/` (Vite, Tailwind, shadcn init + base components) and `backend/` (Laravel, MySQL `legitech` DB).
@@ -54,10 +57,10 @@ GET  /api/admin/enquiries     PATCH|DELETE /api/admin/enquiries/{id}  (status on
 4. **Frontend shell** (done) — the original stylesheet scoped as `site.css`, header with mobile menu, theme toggle, CTA band, footer, routes, and legacy `.html` redirects.
 5. **Frontend pages** (done) — every page, compared pixel by pixel with the original at 1440, 860 and 390px in both themes.
 6. **Contact form** (done) — shadcn Input/Select/Textarea, client validation matching server rules, POST to API, status line, show server 422 errors on fields, keep copy/download brief.
-7. **SEO + polish** — per-route `<title>`/meta description, 404 page, keep the old `*.html` URLs working through redirects to the new routes, accessibility pass (skip link, focus, ARIA), 1180/900/680px breakpoints.
+7. **SEO + polish** (done) — per-route `<title>`/meta description, 404 page, keep the old `*.html` URLs working through redirects to the new routes, accessibility pass (skip link, focus, ARIA), 1180/900/680px breakpoints, `robots.txt`, `sitemap.xml` and site-wide Open Graph tags.
 8. **Deploy** — `npm run build` output served by Apache with an SPA fallback `.htaccess`; Laravel `public/` serving `/api` (the React app serves `/admin`); production `.env`, mail driver, `php artisan optimize`.
 
-9. **Pricing + checkout** — pricing page with DB-driven packages, add-ons and bundles (done); admin screens and Stripe/Klarna checkout later. See `PRICING-CHECKOUT-PLAN.md`.
+9. **Pricing + checkout** (built) — DB-driven packages, add-ons and bundles with admin screens; Stripe Checkout (Klarna via Stripe) and admin orders. Off until Stripe keys are set; refund terms still to write. See `PRICING-CHECKOUT-PLAN.md`.
 
 ## Dev commands
 

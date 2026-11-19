@@ -23,7 +23,7 @@ class StripeCheckout
      */
     public function createSession(Order $order): array
     {
-        $site = config('services.stripe.site_url');
+        $site = config('app.site_url');
         $session = (new StripeClient(config('services.stripe.secret')))->checkout->sessions->create([
             'mode' => 'payment',
             'customer_email' => $order->customer_email,

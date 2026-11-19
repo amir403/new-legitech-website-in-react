@@ -42,11 +42,11 @@ The PHP CLI is `C:\php-8.3.35`, not XAMPP's PHP. `intl`, `zip`, `pdo_sqlite`, `s
 
 ## Verification
 
-- Backend: `cd backend && php artisan test` (feature tests in `tests/Feature/ApiTest.php` and `AdminApiTest.php`).
+- Backend: `cd backend && php artisan test` (feature tests in `tests/Feature/`: `ApiTest`, `AdminApiTest`, `PricingApiTest`, `CheckoutTest`).
 - Frontend: `cd frontend && npm run build` (type-check plus build) and `npm run lint`.
 - In the browser, check desktop and mobile widths (about 1180px, 900px and 680px), light and dark themes, the mobile menu, and the console for errors. Compare public pages against `legacy-static/` (open it at http://localhost/legitech-new/legacy-static/).
 - Report which checks were performed and any behavior that could not be verified.
 
 ## Workspace state
 
-This directory is not a Git repository. Do not initialize Git unless requested.
+This is a Git repository (`main`, pushed to https://github.com/amir403/new-legitech-website-in-react). Commit or push only when asked. `backend/.env` is ignored and holds the Stripe keys.

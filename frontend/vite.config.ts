@@ -7,5 +7,5 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: { alias: { '@': path.resolve(__dirname, './src') } },
   // Laravel runs on :8000 in dev (php artisan serve)
-  server: { proxy: { '/api': 'http://127.0.0.1:8000' } },
+  server: { proxy: { '/api': 'http://127.0.0.1:8000', '/sitemap.xml': 'http://127.0.0.1:8000' } },
 })

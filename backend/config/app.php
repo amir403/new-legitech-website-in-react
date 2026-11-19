@@ -54,6 +54,9 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    // The public React site (the Vite dev server locally). Used for Stripe redirects, email links and the sitemap.
+    'site_url' => rtrim(env('SITE_URL', env('APP_URL', 'http://localhost')), '/'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone

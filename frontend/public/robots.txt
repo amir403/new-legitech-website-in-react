@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /admin
+Disallow: /checkout
+
+# Change the domain here if the site goes live somewhere else (see also index.html).
+Sitemap: https://legitech.io/sitemap.xml
